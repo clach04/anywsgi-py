@@ -4,6 +4,8 @@
 
 quick and dirty use any available WSGI server for running from command line
 
+  * https://pypi.org/project/anywsgi/
+  * https://github.com/clach04/anywsgi-py
 
 ## Getting Started
 
