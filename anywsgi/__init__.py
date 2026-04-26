@@ -41,6 +41,7 @@ except ImportError:
 try:
     import cheroot  # CherryPy Server https://cheroot.cherrypy.dev/en/latest/pkg/cheroot.wsgi/
     import cheroot.wsgi
+    from cheroot.ssl.builtin import BuiltinSSLAdapter as cheroot_BuiltinSSLAdapter
 except ImportError:
     cheroot = None
 
@@ -157,6 +158,17 @@ def my_start_server(callable_app, listen_address=DEFAULT_LISTEN_ADDRESS, listen_
     elif cheroot:
         log.info('Using: cheroot %s', cheroot.__version__)
         server = cheroot.wsgi.Server((listen_address, listen_port), callable_app)  # '' untested for address
+        do_ssl = False  # TODO / FIXME
+        if do_ssl:
+            log.info('doing SSL')
+            # mkcert hostname  # see https://github.com/filosottile/mkcert
+
+            # Configure the SSL Adapter with your certificate and private key paths
+            server.ssl_adapter = cheroot_BuiltinSSLAdapter(
+                certificate='localhost.pem',  # TODO / FIXME
+                private_key='localhost-key.pem',  # TODO / FIXME
+                #certificate_chain='/path/to/chain.pem'  # Optional
+            )
         server.start()
     elif cherrypy:
         log.info('Using: cherrypy %s', cherrypy.__version__)
