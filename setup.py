@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: ascii -*-
 # vim:ts=4:sw=4:softtabstop=4:smarttab:expandtab
-"""TODO
+"""Quick and dirty use any available WSGI server for running from command line
 """
 
 import sys
@@ -55,8 +55,8 @@ PyPi:
 # Metadata
 project_name = 'anywsgi'
 project_name_lower = project_name.lower()
-description = 'TODO'
-license = "TODO"  # ensure this matches tail of http://pypi.python.org/pypi?%3Aaction=list_classifiers
+description = 'Quick and dirty use any available WSGI server for running from command line'
+license = "Apache Software License"  # (specifically APL2 ) ensure this matches tail of http://pypi.python.org/pypi?%3Aaction=list_classifiers
 
 
 __version__ = None  # Overwritten by executing _version.py.
@@ -83,14 +83,14 @@ setup(
     maintainer=person_name,
     maintainer_email=person_email,
     packages=packages,
-    #license=license,  # NOTE http://guide.python-distribute.org/creation.html and http://docs.python.org/distutils/setupscript.html disagree on what this field is
+    license=license,  # NOTE http://guide.python-distribute.org/creation.html and http://docs.python.org/distutils/setupscript.html disagree on what this field is
     description=description,
     long_description=long_description,
     long_description_content_type='text/markdown',
     classifiers=[  # See http://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 4 - Beta',
 
-        #'License :: OSI Approved :: ' + license,
+        'License :: OSI Approved :: ' + license,
 
         'Intended Audience :: Developers',
 
