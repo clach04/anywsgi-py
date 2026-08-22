@@ -159,6 +159,7 @@ def my_start_server(callable_app, listen_address=DEFAULT_LISTEN_ADDRESS, listen_
         log.info('Using: cheroot %s', cheroot.__version__)
         server = cheroot.wsgi.Server((listen_address, listen_port), callable_app)  # '' untested for address
         do_ssl = False  # TODO / FIXME
+        #do_ssl = True  # DEBUG! TODO / FIXME
         if do_ssl:
             log.info('doing SSL')
             # mkcert hostname  # see https://github.com/filosottile/mkcert
