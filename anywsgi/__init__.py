@@ -39,7 +39,7 @@ except ImportError:
     bjoern = None
 
 try:
-    import cheroot  # CherryPy Server https://cheroot.cherrypy.dev/en/latest/pkg/cheroot.wsgi/
+    import cheroot  # CherryPy Server https://cheroot.cherrypy.dev/en/latest/pkg/cheroot.wsgi/  - pip install cheroot
     import cheroot.wsgi
     from cheroot.ssl.builtin import BuiltinSSLAdapter as cheroot_BuiltinSSLAdapter
 except ImportError:
@@ -165,7 +165,7 @@ def my_start_server(callable_app, listen_address=DEFAULT_LISTEN_ADDRESS, listen_
 
             # Configure the SSL Adapter with your certificate and private key paths
             server.ssl_adapter = cheroot_BuiltinSSLAdapter(
-                certificate='localhost.pem',  # TODO / FIXME
+                certificate='localhost.pem',  # TODO / FIXME, e.g. "mkcert-v1.4.4-windows-amd64.exe localhost"
                 private_key='localhost-key.pem',  # TODO / FIXME
                 #certificate_chain='/path/to/chain.pem'  # Optional
             )
