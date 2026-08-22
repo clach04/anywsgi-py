@@ -146,15 +146,16 @@ def my_start_server(callable_app, listen_address=DEFAULT_LISTEN_ADDRESS, listen_
     log.info('open : http://%s:%d', platform.node(), listen_port)
 
     # Try servers in the order I personally prefer ;-)
-    if werkzeug:
+    if waitress:
+        #log.info('Using: waitress%s', waitress.__version__)  # fails for waitress      3.0.0
+        log.info('Using: waitress')
+        waitress.serve(callable_app, host=listen_address, port=listen_port)
+    elif werkzeug:
         import importlib.metadata
         #log.info('Using: werkzeug %s', werkzeug.__version__)
         log.info('Using: werkzeug %s', importlib.metadata.version("werkzeug"))
         #werkzeug.serving.run_simple(listen_address, listen_port, callable_app, use_debugger=True, use_reloader=True)
         werkzeug.serving.run_simple(listen_address, listen_port, callable_app, use_debugger=False, use_reloader=False)
-    elif waitress:
-        log.info('Using: waitress%s', waitress.__version__)
-        waitress.serve(callable_app, host=listen_address, port=listen_port)
     elif cheroot:
         log.info('Using: cheroot %s', cheroot.__version__)
         server = cheroot.wsgi.Server((listen_address, listen_port), callable_app)  # '' untested for address
