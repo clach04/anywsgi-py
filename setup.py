@@ -18,10 +18,18 @@ is_win = sys.platform.startswith('win')
 is_cpython = platform.python_implementation() == 'CPython'
 
 
+CR = '\r'  # 0x0D - Carriage Return
+LF = '\n'  # 0x0A - Line Feed / New Line
+
+def simple_dos2unix(plain_str):
+    """Assume input bytes are clean/correct DOS/Windows linefeeds"""
+    return plain_str.replace(CR + LF, LF)
+
 readme_filename = 'README.md'
 if os.path.exists(readme_filename):
     f = open(readme_filename, 'rb')
     long_description = f.read().decode('utf-8')
+    long_description = simple_dos2unix(long_description)  # Windows to Unix line endings, without this end up with double-newlines on pypi for code blocks
     f.close()
 else:
     long_description = None
