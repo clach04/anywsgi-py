@@ -217,7 +217,10 @@ def my_start_server(callable_app, listen_address=DEFAULT_LISTEN_ADDRESS, listen_
         # Single-threaded wsgiref blocks all requests while one handler runs,
         # which breaks SSE clients (the long-lived event stream starves
         # concurrent POSTs). Thread per connection instead; py2/3 compatible.
-        import socketserver
+        try:
+            import socketserver  # py3
+        except ImportError:
+            import SocketServer as socketserver  # py2
         import wsgiref.simple_server as wsgiref_simple_server
 
         class ThreadingWSGIServer(socketserver.ThreadingMixIn, wsgiref_simple_server.WSGIServer):
