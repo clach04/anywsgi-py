@@ -211,9 +211,26 @@ def my_start_server(callable_app, listen_address=DEFAULT_LISTEN_ADDRESS, listen_
         meinheld.server.listen(('0.0.0.0', listen_port))  # does not accept ''
         meinheld.server.run(simple_app)
     else:
-        log.info('Using: wsgiref.simple_server %s', wsgiref.simple_server.__version__)
+        log.info('Using: wsgiref.simple_server %s (threaded)', wsgiref.simple_server.__version__)
         # TODO should listen_address = '' when listen_address was set to 0.0.0.0?
-        httpd = wsgiref.simple_server.make_server(listen_address, listen_port, callable_app)
+
+        # Single-threaded wsgiref blocks all requests while one handler runs,
+        # which breaks SSE clients (the long-lived event stream starves
+        # concurrent POSTs). Thread per connection instead; py2/3 compatible.
+        import socketserver
+        import wsgiref.simple_server as wsgiref_simple_server
+
+        class ThreadingWSGIServer(socketserver.ThreadingMixIn, wsgiref_simple_server.WSGIServer):
+            daemon_threads = True  # SSE handlers may outlive Ctrl-C; do not block exit
+
+        class ThreadedWSGIHandler(wsgiref_simple_server.WSGIRequestHandler):
+            # keep stderr quieter; wsgiref logs each request line
+            def log_message(self, format, *args):
+                log.debug('%s %s', self.address_string(), format % args)
+
+        httpd = wsgiref_simple_server.make_server(listen_address, listen_port, callable_app,
+                                                  server_class=ThreadingWSGIServer,
+                                                  handler_class=ThreadedWSGIHandler)
         httpd.serve_forever()
 
 
