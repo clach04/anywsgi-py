@@ -49,7 +49,7 @@ server_port = int(os.environ.get('LISTEN_PORT', DEFAULT_SERVER_PORT))
 anywsgi.my_start_server(application, listen_address=listen_address, listen_port=server_port)
 ```
 
-<detail>
+<details>
 <summary>
 Hello World Fallback Demo
 </summary>
@@ -91,4 +91,4 @@ else:
     except KeyboardInterrupt:
         print("\nServer stopped by user.")
 ```
-</detail>
+</details>
